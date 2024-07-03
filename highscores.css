@@ -1,0 +1,14 @@
+#highScoreslist {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 2;    
+}
+.high-score{
+    list-style: none;
+    font-size:2.8rem;
+    margin-bottom: 2rem;
+}
+
+.high-score:hover{
+    transform: scale(1.025);
+}
