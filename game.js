@@ -54,7 +54,8 @@ startGame = ()=> {
 };
 getNewQuestion = ()=> {
     if(availableQuestions.length == 0 ||questionCounter >=  MAX_QUESTIONS){
-    // go to the end of the page
+        localStorage.setItem('mostRecentScore', score);
+        // go to the end of the page
         return window.location.assign("/end.html") ;
        }
 
