@@ -3,6 +3,8 @@ const choices = Array.from(document.getElementsByClassName('choice-text'));
 const questionCounterText = document.getElementById("questionCounter");
 const scoreText = document.getElementById('score');
 const timerElement = document.getElementById('timer');
+const loader =document.getElementById('loader');
+const game =document.getElementById('game');
 
 let currentQuestion = {};
 let acceptingAnswers = false;
@@ -13,17 +15,33 @@ let timerInterval;
 
 let questions = [];
 
-fetch("questions.json").then(res => {
-       
-        return res.json();
-}).then(loadedQuestions =>{
-    console.log(loadedQuestions);
-    questions = loadedQuestions;
-    startGame();
-})
-.catch( err => {
-    console.log(err);
-})
+fetch("https://opentdb.com/api.php?amount=10&category=9&difficulty=medium&type=multiple")
+    .then(res => res.json())
+    .then(loadedQuestions => {
+        questions = loadedQuestions.results.map(loadedQuestion => {
+            const formattedQuestion = {
+                question: loadedQuestion.question
+            };
+            const answerChoices = [...loadedQuestion.incorrect_answers];
+            formattedQuestion.answer = Math.floor(Math.random() * 4) + 1;
+            answerChoices.splice(
+                formattedQuestion.answer - 1,
+                0,
+                loadedQuestion.correct_answer
+            );
+
+            answerChoices.forEach((choice, index) => {
+                formattedQuestion["choice" + (index + 1)] = choice;
+            });
+
+            return formattedQuestion;
+        });
+        
+        startGame();
+    })
+    .catch(err => {
+        console.error(err);
+    });
 
 const CORRECT_BONUS = 10;
 const MAX_QUESTIONS = 3;
@@ -33,6 +51,8 @@ function startGame() {
     score = 0;
     availableQuestions = [...questions];
     getNewQuestion();
+    game.classList.remove('hidden');
+    loader.classList.add('hidden');
 }
 
 function getNewQuestion() {
@@ -67,7 +87,7 @@ choices.forEach(choice => {
         const selectedChoice = e.target;
         const selectedAnswer = selectedChoice.dataset['number'];
 
-        const classToApply = selectedAnswer == currentQuestion.Answer ? "correct" : "incorrect";
+        const classToApply = selectedAnswer == currentQuestion.answer ? "correct" : "incorrect";
 
         if (classToApply === 'correct') {
             incrementScore(CORRECT_BONUS);
@@ -124,7 +144,7 @@ function startTimer() {
 function showAnswerAndReload() {
     choices.forEach(choice => {
         const number = choice.dataset['number'];
-        if (number == currentQuestion.Answer) {
+        if (number == currentQuestion.answer) {
             choice.parentElement.classList.add('correct');
         }
     });
@@ -132,7 +152,5 @@ function showAnswerAndReload() {
     setTimeout(() => {
         choices.forEach(choice => choice.parentElement.classList.remove('correct'));
         getNewQuestion();
-    }, 2000); 
+    }, 2000);
 }
-
-
