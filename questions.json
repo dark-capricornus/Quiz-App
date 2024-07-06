@@ -1,0 +1,34 @@
+[
+    {
+        "question": "What is the largest planet in our solar system?",
+        "choice1": "Earth",
+        "choice2": "Jupiter",
+        "choice3": "Mars",
+        "choice4": "Venus",
+        "Answer": 2
+    },
+    {
+        "question": "Who wrote the play 'Romeo and Juliet'?",
+        "choice1": "William Shakespeare",
+        "choice2": "Charles Dickens",
+        "choice3": "Mark Twain",
+        "choice4": "Jane Austen",
+        "Answer": 1
+    },
+    {
+        "question": "Which element has atomic number 1?",
+        "choice1": "Hydrogen",
+        "choice2": "Helium",
+        "choice3": "Oxygen",
+        "choice4": "Carbon",
+        "Answer": 1
+    },
+    {
+        "question": "What is the chemical symbol for water?",
+        "choice1": "H₂O",
+        "choice2": "CO₂",
+        "choice3": "O₂",
+        "choice4": "H₂",
+        "Answer": 1
+    }
+]
