@@ -14,12 +14,16 @@ let timerInterval;
 let questions = [];
 
 fetch("questions.json").then(res => {
-        console.log(res);
+       
         return res.json();
-})
-.then(loadedQuestions =>{
+}).then(loadedQuestions =>{
     console.log(loadedQuestions);
-});
+    questions = loadedQuestions;
+    startGame();
+})
+.catch( err => {
+    console.log(err);
+})
 
 const CORRECT_BONUS = 10;
 const MAX_QUESTIONS = 3;
@@ -131,4 +135,4 @@ function showAnswerAndReload() {
     }, 2000); 
 }
 
-startGame();
+
