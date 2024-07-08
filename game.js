@@ -3,31 +3,35 @@ const choices = Array.from(document.getElementsByClassName('choice-text'));
 const questionCounterText = document.getElementById("questionCounter");
 const scoreText = document.getElementById('score');
 const timerElement = document.getElementById('timer');
-const loader = document.getElementById('loader')
-const game =document.getElementById('game')
+const loader = document.getElementById('loader');
+const game = document.getElementById('game');
+
 let currentQuestion = {};
 let acceptingAnswers = false;
 let score = 0;
 let questionCounter = 0;
 let availableQuestions = [];
 let timerInterval;
-
 let questions = [];
-
-fetch("questions.json").then(res => {
-       
-        return res.json();
-}).then(loadedQuestions =>{
-    console.log(loadedQuestions);
-    questions = loadedQuestions;
-    startGame();
-})
-.catch( err => {
-    console.log(err);
-})
 
 const CORRECT_BONUS = 10;
 const MAX_QUESTIONS = 3;
+
+// Fetch questions from local JSON file
+fetch("questions.json")
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(loadedQuestions => {
+        questions = loadedQuestions;
+        startGame();
+    })
+    .catch(err => {
+        console.error("Failed to load questions:", err);
+    });
 
 function startGame() {
     questionCounter = 0;
@@ -41,7 +45,7 @@ function startGame() {
 function getNewQuestion() {
     if (availableQuestions.length === 0 || questionCounter >= MAX_QUESTIONS) {
         localStorage.setItem('mostRecentScore', score);
-        return window.location.assign("/end.html");
+        return window.location.assign("end.html");
     }
 
     questionCounter++;
@@ -53,7 +57,7 @@ function getNewQuestion() {
 
     choices.forEach(choice => {
         const number = choice.dataset['number'];
-        choice.innerText = currentQuestion["choice" + number];
+        choice.innerText = currentQuestion[`choice${number}`];
     });
 
     availableQuestions.splice(questionIndex, 1);
@@ -69,7 +73,6 @@ choices.forEach(choice => {
         acceptingAnswers = false;
         const selectedChoice = e.target;
         const selectedAnswer = selectedChoice.dataset['number'];
-
         const classToApply = selectedAnswer == currentQuestion.Answer ? "correct" : "incorrect";
 
         if (classToApply === 'correct') {
@@ -77,7 +80,6 @@ choices.forEach(choice => {
         }
 
         selectedChoice.parentElement.classList.add(classToApply);
-
         clearInterval(timerInterval); // Stop the timer when an answer is selected
 
         setTimeout(() => {
@@ -137,5 +139,3 @@ function showAnswerAndReload() {
         getNewQuestion();
     }, 2000); 
 }
-
-
