@@ -12,26 +12,45 @@ let score = 0;
 let questionCounter = 0;
 let availableQuestions = [];
 let timerInterval;
-let questions = [];
+
 
 const CORRECT_BONUS = 10;
 const MAX_QUESTIONS = 3;
 
-// Fetch questions from local JSON file
-fetch("questions.json")
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(loadedQuestions => {
-        questions = loadedQuestions;
-        startGame();
-    })
-    .catch(err => {
-        console.error("Failed to load questions:", err);
-    });
+let questions = [
+    {
+        question: "What is the largest planet in our solar system?",
+        choice1: "Earth",
+        choice2: "Jupiter",
+        choice3: "Mars",
+        choice4: "Venus",
+        Answer: 2
+    },
+    {
+        question: "Who wrote the play 'Romeo and Juliet'?",
+        choice1: "William Shakespeare",
+        choice2: "Charles Dickens",
+        choice3: "Mark Twain",
+        choice4: "Jane Austen",
+        Answer: 1
+    },
+    {
+        question: "Which element has atomic number 1?",
+        choice1: "Hydrogen",
+        choice2: "Helium",
+        choice3: "Oxygen",
+        choice4: "Carbon",
+        Answer: 1
+    },
+    {
+        question: "What is the chemical symbol for water?",
+        choice1: "H₂O",
+        choice2: "CO₂",
+        choice3: "O₂",
+        choice4: "H₂",
+        Answer: 1
+    },
+];
 
 function startGame() {
     questionCounter = 0;
