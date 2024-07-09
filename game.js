@@ -3,8 +3,6 @@ const choices = Array.from(document.getElementsByClassName('choice-text'));
 const questionCounterText = document.getElementById("questionCounter");
 const scoreText = document.getElementById('score');
 const timerElement = document.getElementById('timer');
-const loader = document.getElementById('loader');
-const game = document.getElementById('game');
 
 let currentQuestion = {};
 let acceptingAnswers = false;
@@ -12,10 +10,6 @@ let score = 0;
 let questionCounter = 0;
 let availableQuestions = [];
 let timerInterval;
-
-
-const CORRECT_BONUS = 10;
-const MAX_QUESTIONS = 3;
 
 let questions = [
     {
@@ -52,13 +46,14 @@ let questions = [
     },
 ];
 
+const CORRECT_BONUS = 10;
+const MAX_QUESTIONS = 3;
+
 function startGame() {
     questionCounter = 0;
     score = 0;
     availableQuestions = [...questions];
     getNewQuestion();
-    game.classList.remove('hidden');
-    loader.classList.add('hidden');
 }
 
 function getNewQuestion() {
@@ -76,13 +71,13 @@ function getNewQuestion() {
 
     choices.forEach(choice => {
         const number = choice.dataset['number'];
-        choice.innerText = currentQuestion[`choice${number}`];
+        choice.innerText = currentQuestion["choice" + number];
     });
 
     availableQuestions.splice(questionIndex, 1);
     acceptingAnswers = true;
 
-    startTimer(); // Start the timer for the new question
+    startTimer(); 
 }
 
 choices.forEach(choice => {
@@ -92,6 +87,7 @@ choices.forEach(choice => {
         acceptingAnswers = false;
         const selectedChoice = e.target;
         const selectedAnswer = selectedChoice.dataset['number'];
+
         const classToApply = selectedAnswer == currentQuestion.Answer ? "correct" : "incorrect";
 
         if (classToApply === 'correct') {
@@ -99,6 +95,7 @@ choices.forEach(choice => {
         }
 
         selectedChoice.parentElement.classList.add(classToApply);
+
         clearInterval(timerInterval); // Stop the timer when an answer is selected
 
         setTimeout(() => {
@@ -158,3 +155,5 @@ function showAnswerAndReload() {
         getNewQuestion();
     }, 2000); 
 }
+
+startGame();
